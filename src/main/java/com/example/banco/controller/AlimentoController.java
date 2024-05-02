@@ -1,48 +1,53 @@
 package com.example.banco.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.banco.entity.Alimento;
-import com.example.banco.respository.AlimentoRepository;
-
-import java.util.List;
+import com.example.banco.service.AlimentoService;
 
 
 @RestController
 @RequestMapping("/api/alimentos")
 public class AlimentoController {
+
     @Autowired
-    private AlimentoRepository alimentoRepository;
+    private AlimentoService alimentoService;
 
     @GetMapping
-    public List<Alimento> getAllAlimentos() {
-        return alimentoRepository.findAll();
+    public List<Alimento> listarAlimentos() {
+        return alimentoService.listarTodos();
+    }
+
+    @GetMapping("/{id}")
+    public Alimento encontrarAlimentoPorId(@PathVariable Long id) {
+        return alimentoService.encontrarPorId(id);
     }
 
     @PostMapping
-    public Alimento createAlimento(@RequestBody Alimento alimento) {
-        return alimentoRepository.save(alimento);
+    public Alimento adicionarAlimento(@RequestBody Alimento alimento) {
+        return alimentoService.salvar(alimento);
     }
 
     @PutMapping("/{id}")
-    public Alimento updateAlimento(@PathVariable Long id, @RequestBody Alimento novoAlimento) {
-        return alimentoRepository.findById(id)
-                .map(alimento -> {
-                    alimento.setNome(novoAlimento.getNome());
-                    alimento.setHorarios(novoAlimento.getHorarios());
-                    alimento.setAlimentos(novoAlimento.getAlimentos());
-                    alimento.setRestricoes(novoAlimento.getRestricoes());
-                    return alimentoRepository.save(alimento);
-                })
-                .orElseGet(() -> {
-                    novoAlimento.setId(id);
-                    return alimentoRepository.save(novoAlimento);
-                });
+    public Alimento atualizarAlimento(@PathVariable Long id, @RequestBody Alimento alimentoAtualizado) {
+        Alimento alimento = alimentoService.encontrarPorId(id);
+        if (alimento != null) {
+            alimento.setNome(alimentoAtualizado.getNome());
+            alimento.setAlimento(alimentoAtualizado.getAlimento());
+            alimento.setHorario(alimentoAtualizado.getHorario());
+            alimento.setRestricoes(alimentoAtualizado.getRestricoes());
+            // Atualize outras informações aqui
+            return alimentoService.salvar(alimento);
+        }
+        return null;
     }
 
     @DeleteMapping("/{id}")
-    public void deleteAlimento(@PathVariable Long id) {
-        alimentoRepository.deleteById(id);
+    public void excluirAlimento(@PathVariable Long id) {
+        alimentoService.excluir(id);
     }
 }
+

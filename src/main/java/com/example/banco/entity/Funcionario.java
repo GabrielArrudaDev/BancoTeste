@@ -8,15 +8,12 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Alimento {
-
+public class Funcionario {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
-    private String alimento;
-    private String horario;
-    private String restricoes;
-
+    private String cpf;
+    private String funcao;
 }
-

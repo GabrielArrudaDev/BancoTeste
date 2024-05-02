@@ -1,44 +1,51 @@
 package com.example.banco.controller;
 
-// PacienteController.java
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.banco.entity.Paciente;
-import com.example.banco.respository.PacienteRepository;
+import com.example.banco.service.PacienteService;
 
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/pacientes")
 public class PacienteController {
+
     @Autowired
-    private PacienteRepository pacienteRepository;
+    private PacienteService pacienteService;
 
     @GetMapping
     public List<Paciente> listarPacientes() {
-        return pacienteRepository.findAll();
+        return pacienteService.listarTodos();
+    }
+
+    @GetMapping("/{id}")
+    public Paciente encontrarPacientePorId(@PathVariable Long id) {
+        return pacienteService.encontrarPorId(id);
     }
 
     @PostMapping
     public Paciente adicionarPaciente(@RequestBody Paciente paciente) {
-        return pacienteRepository.save(paciente);
+        return pacienteService.salvar(paciente);
     }
 
     @PutMapping("/{id}")
-    public Paciente atualizarPaciente(@PathVariable Long id, @RequestBody Paciente novoPaciente) {
-        return pacienteRepository.findById(id)
-                .map(paciente -> {
-                    paciente.setNome(novoPaciente.getNome());
-                    paciente.setIdade(novoPaciente.getIdade());
-                    paciente.setCondicao(novoPaciente.getCondicao());
-                    return pacienteRepository.save(paciente);
-                })
-                .orElseThrow(() -> new RuntimeException("Paciente não encontrado"));
+    public Paciente atualizarPaciente(@PathVariable Long id, @RequestBody Paciente pacienteAtualizado) {
+        Paciente paciente = pacienteService.encontrarPorId(id);
+        if (paciente != null) {
+            paciente.setNome(pacienteAtualizado.getNome());
+            paciente.setIdade(pacienteAtualizado.getIdade());
+            paciente.setCondicao(pacienteAtualizado.getCondicao());
+            // Atualize outras informações aqui
+            return pacienteService.salvar(paciente);
+        }
+        return null;
     }
 
     @DeleteMapping("/{id}")
-    public void deletarPaciente(@PathVariable Long id) {
-        pacienteRepository.deleteById(id);
+    public void excluirPaciente(@PathVariable Long id) {
+        pacienteService.excluir(id);
     }
 }
