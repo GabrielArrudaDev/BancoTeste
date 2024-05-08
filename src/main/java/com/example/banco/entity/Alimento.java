@@ -16,7 +16,7 @@ public class Alimento {
     private String nome;
     private String alimento;
     private String horario;
-    private String restricoes;
+    private String observacao;
 
 }
 

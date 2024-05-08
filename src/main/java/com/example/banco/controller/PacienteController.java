@@ -37,7 +37,9 @@ public class PacienteController {
         if (paciente != null) {
             paciente.setNome(pacienteAtualizado.getNome());
             paciente.setIdade(pacienteAtualizado.getIdade());
+            paciente.setDieta(pacienteAtualizado.getDieta());
             paciente.setCondicao(pacienteAtualizado.getCondicao());
+            paciente.setObservacao(pacienteAtualizado.getObservacao());
             // Atualize outras informações aqui
             return pacienteService.salvar(paciente);
         }

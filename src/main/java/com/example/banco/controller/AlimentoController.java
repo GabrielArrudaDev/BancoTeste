@@ -38,7 +38,7 @@ public class AlimentoController {
             alimento.setNome(alimentoAtualizado.getNome());
             alimento.setAlimento(alimentoAtualizado.getAlimento());
             alimento.setHorario(alimentoAtualizado.getHorario());
-            alimento.setRestricoes(alimentoAtualizado.getRestricoes());
+            alimento.setObservacao(alimentoAtualizado.getObservacao());
             // Atualize outras informações aqui
             return alimentoService.salvar(alimento);
         }

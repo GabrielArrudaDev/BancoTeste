@@ -18,6 +18,6 @@ public class Medicamento {
     private String tipo;
     private String dosagem;
     private String horario;
-
+    private String observacao;
 }
 

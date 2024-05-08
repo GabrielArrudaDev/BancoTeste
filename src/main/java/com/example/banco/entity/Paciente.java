@@ -15,7 +15,9 @@ public class Paciente {
     private Long id;
     private String nome;
     private int idade;
+    private String dieta;
     private String condicao;
+    private String observacao;
 
 }
 

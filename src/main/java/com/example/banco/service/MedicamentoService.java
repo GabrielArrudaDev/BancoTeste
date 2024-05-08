@@ -29,9 +29,11 @@ public class MedicamentoService {
                 .orElseThrow();
 
         medicamentoExistente.setNome(medicamento.getNome());
+        medicamentoExistente.setMedicamento(medicamento.getMedicamento());
         medicamentoExistente.setTipo(medicamento.getTipo());
         medicamentoExistente.setDosagem(medicamento.getDosagem());
         medicamentoExistente.setHorario(medicamento.getHorario());
+        medicamentoExistente.setObservacao(medicamento.getObservacao());
 
         return medicamentoRepository.save(medicamentoExistente);
     }
